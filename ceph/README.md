@@ -34,6 +34,23 @@ If you enabled `use_sudo`, add a line like the following to your `sudoers` file:
 dd-agent ALL=(ALL) NOPASSWD:/path/to/your/ceph
 ```
 
+#### Log Collection
+
+To enable collecting logs in the Datadog Agent, update `logs_enabled` in `datadog.yaml`:
+```
+    logs_enabled: true
+```
+
+Next, edit `ceph.d/conf.yaml` by uncommenting the `logs` lines at the bottom. Update the logs `path` with the correct path to your Ceph log files.
+
+```yaml
+logs:
+ - type: file
+   path: /var/log/ceph/*.log
+   source: ceph
+   service: <APPLICATION_NAME>
+```
+
 ### Validation
 
 [Run the Agent's `status` subcommand][5] and look for `ceph` under the Checks section.
