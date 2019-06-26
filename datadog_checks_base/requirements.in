@@ -1,3 +1,4 @@
+binary==1.0.0
 ddtrace==0.13.0
 kubernetes==8.0.1
 prometheus-client==0.3.0
