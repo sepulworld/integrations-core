@@ -36,7 +36,6 @@ stages:
     if: ((branch = master) AND (type = cron)) OR ((commit_message =~ /ci run all/) AND (type = pull_request))
 
 script:
-  - ddev validate logos ${CHECK}
   - travis_retry ddev test --cov ${CHECK}
   - ddev env test --new-env ${CHECK}
   - ddev test ${CHECK} --bench || true
