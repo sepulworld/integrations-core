@@ -29,6 +29,7 @@ env:
     - BOTO_CONFIG=/dev/null
 
 stages:
+  - name: validate
   - name: test_changed
     if: ((type = pull_request) AND (NOT commit_message =~ /ci run all/))
   - name: test
@@ -51,7 +52,7 @@ script:
 jobs:
   fast_finish: true
   include:
-    - stage: test_changed
+    - stage: validate
       script:
         - ddev validate agent-reqs
         - ddev validate config
@@ -60,19 +61,14 @@ jobs:
         - ddev validate manifest --include-extras
         - ddev validate metadata
         - ddev validate service-checks
+    - stage: test_changed
+      script:
         - ddev test --cov
         - ddev env test
         - ddev test --bench || true
     - stage: test
       env: CHECK=datadog_checks_base PYTHON3=true
       script:
-        - ddev validate agent-reqs
-        - ddev validate config
-        - ddev validate dep
-        - ddev validate logos
-        - ddev validate manifest --include-extras
-        - ddev validate metadata
-        - ddev validate service-checks
         - travis_retry ddev test --cov ${CHECK}
         - ddev test ${CHECK} --bench || true
     - stage: test
