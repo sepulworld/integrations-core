@@ -26,12 +26,8 @@ def get_tox_envs(
     changed_checks = get_changed_checks() if not checks or changed_only else None
 
     if not checks:
-        if 'datadog_checks_base' in changed_checks:
-            checks = testable_checks
-        else:
-            checks = testable_checks & changed_checks
+        checks = sorted(testable_checks & changed_checks)
 
-    checks = sorted(checks)
     checks_seen = set()
     for check in checks:
         check, _, envs_selected = check.partition(':')
