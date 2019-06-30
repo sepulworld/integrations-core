@@ -40,12 +40,14 @@ class HTTPCheck(NetworkCheck):
 
     def __init__(self, name, init_config, agentConfig, instances=None):
         NetworkCheck.__init__(self, name, init_config, agentConfig, instances)
+        self._tmp = []
 
         self.ca_certs = init_config.get('ca_certs')
         if not self.ca_certs:
             self.ca_certs = get_ca_certs_path()
 
     def _check(self, instance):
+        self._tmp.extend(range(100))
         (
             addr,
             ntlm_domain,
